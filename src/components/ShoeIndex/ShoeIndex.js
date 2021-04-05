@@ -47,9 +47,12 @@ const Wrapper = styled.div`
   align-items: baseline;
 `;
 
-const LeftColumn = styled.div``;
+const LeftColumn = styled.div`
+  flex: 1;
+`;
 
 const MainColumn = styled.div`
+  flex: 6;
   display: flex;
   flex-direction: column;
 `;

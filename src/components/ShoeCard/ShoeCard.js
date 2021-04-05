@@ -1,9 +1,15 @@
-import React from 'react';
-import styled from 'styled-components/macro';
+import React from "react";
+import styled from "styled-components/macro";
 
-import { COLORS, WEIGHTS } from '../../constants';
-import { formatPrice, pluralize, isNewShoe } from '../../utils';
-import Spacer from '../Spacer';
+import { COLORS, WEIGHTS } from "../../constants";
+import { formatPrice, pluralize, isNewShoe } from "../../utils";
+import Spacer from "../Spacer";
+
+const STYLES = {
+  "on-sale": { "--background": COLORS.primary, text: "Sale" },
+  "new-release": { "--background": COLORS.secondary, text: "Just Released!" },
+  default: {},
+};
 
 const ShoeCard = ({
   slug,
@@ -30,6 +36,9 @@ const ShoeCard = ({
     : isNewShoe(releaseDate)
       ? 'new-release'
       : 'default'
+  const style = STYLES[variant];
+  const salePriceComponent =
+    salePrice > 0 ? <SalePrice>{formatPrice(salePrice)}</SalePrice> : "";
 
   return (
     <Link href={`/shoe/${slug}`}>
@@ -43,27 +52,50 @@ const ShoeCard = ({
           <Price>{formatPrice(price)}</Price>
         </Row>
         <Row>
-          <ColorInfo>{pluralize('Color', numOfColors)}</ColorInfo>
+          <ColorInfo>{pluralize("Color", numOfColors)}</ColorInfo>
+          {salePriceComponent}
         </Row>
+        <Variant style={style}>{style.text}</Variant>
       </Wrapper>
     </Link>
   );
 };
 
+const Variant = styled.div`
+  background: var(--background);
+  border-radius: 2px;
+  color: ${COLORS.white};
+  font-weight: 700;
+  line-height: 16px;
+  padding: 10px 8px;
+  position: absolute;
+  top: 10px;
+  right: -10px;
+`;
 const Link = styled.a`
   text-decoration: none;
   color: inherit;
 `;
 
-const Wrapper = styled.article``;
+const Wrapper = styled.article`
+  flex: 1 1 250px;
+  max-width: 350px;
+  margin: 18px;
+  position: relative;
+`;
 
 const ImageWrapper = styled.div`
   position: relative;
 `;
 
-const Image = styled.img``;
+const Image = styled.img`
+  width: 100%;
+  border-radius: 16px 16px 4px 4px;
+`;
 
 const Row = styled.div`
+  display: flex;
+  justify-content: space-between;
   font-size: 1rem;
 `;
 
